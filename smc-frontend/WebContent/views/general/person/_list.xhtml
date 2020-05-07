@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<h:form id="PersonListForm">
+		<p:panel header="Person administration">
+			<p:dataTable id="datalist" value="#{personController.items}"
+				var="item" selectionMode="single"
+				selection="#{personController.selected}" rowKey="#{item.personId}"
+				paginator="true" paginatorPosition="bottom" rows="15"
+				rowsPerPageTemplate="15,25" tableStyle="table-layout:fixed">
+				<p:ajax event="rowSelect"
+					update="createButton,editButton,deleteButton" />
+				<p:ajax event="rowUnselect"
+					update="createButton,editButton,deleteButton" />
+				<p:column sortBy="#{item.firstName}" filterBy="#{item.firstName}"
+					filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="First name" />
+					</f:facet>
+					<h:outputText value="#{item.firstName}" />
+				</p:column>
+				<p:column sortBy="#{item.lastName}" filterBy="#{item.lastName}"
+					filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="Last name" />
+					</f:facet>
+					<h:outputText value="#{item.lastName}" />
+				</p:column>
+				<p:column sortBy="#{item.e_Mail}" filterBy="#{item.e_Mail}"
+					filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="E-mail" />
+					</f:facet>
+					<h:outputText value="#{item.e_Mail}" />
+				</p:column>
+				<f:facet name="footer">
+					<hr />
+					<h:panelGroup layout="block" style="float: right">
+						<p:commandButton id="refreshButton" icon="ui-icon-refresh"
+							value="Refresh" update="@form,:messages"
+							actionListener="#{personController.resetItems()}" />
+						<p:commandButton id="createButton" icon="ui-icon-plus" value="Add"
+							actionListener="#{personController.prepare4Add()}"
+							update=":PersonCreateForm"
+							oncomplete="PF('PersonCreateDialog').show();" />
+						<p:commandButton id="editButton" icon="ui-icon-pencil"
+							value="Edit"
+							actionListener="#{personController.prepare4Modify()}"
+							update=":PersonEditForm"
+							oncomplete="PF('PersonEditDialog').show();"
+							disabled="#{empty personController.selected}" />
+						<p:commandButton id="deleteButton" icon="ui-icon-trash"
+							value="Delete" actionListener="#{personController.delete()}"
+							update="@form,:messages"
+							disabled="#{empty personController.selected}" />
+					</h:panelGroup>
+				</f:facet>
+			</p:dataTable>
+		</p:panel>
+	</h:form>
+</ui:composition>

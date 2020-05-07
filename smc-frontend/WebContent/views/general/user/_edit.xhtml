@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<ui:composition>
+	<p:dialog id="UserEditDlg" position="center center" draggable="false"
+		closable="false" widgetVar="UserEditDialog" modal="true"
+		resizable="false" appendToBody="true" header="Modify user">
+		<h:form id="UserEditForm">
+			<h:panelGroup id="display">
+				<p:panelGrid columns="2"
+					rendered="#{smcUserController.selected != null}">
+					<p:outputLabel value="User name" for="userName" />
+					<p:inputText id="userName"
+						value="#{smcUserController.selected.userName}" />
+					<p:outputLabel value="Password" for="password" />
+					<p:inputText id="password"
+						value="#{smcUserController.selected.newPassword}" />
+					<p:outputLabel value="Person" for="personId" />
+					<p:selectOneMenu id="personId"
+						value="#{smcUserController.selected.person}" filter="true"
+						filterMatchMode="contains">
+						<f:selectItem itemLabel="(none)" itemValue="#{null}" />
+						<f:selectItems value="#{personController.items}"
+							var="personIdItem" itemValue="#{personIdItem}"
+							itemLabel="#{personIdItem.fullName}" />
+						<f:converter binding="#{personConverter}" />
+					</p:selectOneMenu>
+					<p:outputLabel value="Group" for="userGroupId" />
+					<p:selectOneMenu id="userGroupId"
+						value="#{smcUserController.selected.userGroup}" filter="true"
+						filterMatchMode="contains">
+						<f:selectItem itemLabel="(none)" itemValue="#{null}" />
+						<f:selectItems value="#{userGroupController.items}"
+							var="userGroupIdItem" itemValue="#{userGroupIdItem}"
+							itemLabel="#{userGroupIdItem.userGroupName}" />
+						<f:converter binding="#{userGroupConverter}" />
+					</p:selectOneMenu>
+					<p:outputLabel value="Password rule" for="passwordRuleId" />
+					<p:selectOneMenu id="passwordRuleId"
+						value="#{smcUserController.selected.passwordRule}" filter="true"
+						filterMatchMode="contains">
+						<f:selectItem itemLabel="(none)" itemValue="#{null}" />
+						<f:selectItems value="#{passwordRuleController.items}"
+							var="passwordRuleIdItem" itemValue="#{passwordRuleIdItem}"
+							itemLabel="#{passwordRuleIdItem.passwordRuleCode}" />
+						<f:converter binding="#{passwordRuleConverter}" />
+					</p:selectOneMenu>
+					<p:outputLabel value="Inactive" for="inactive" />
+					<p:selectBooleanCheckbox id="inactive"
+						value="#{smcUserController.selected.inactive}" />
+				</p:panelGrid>
+				<h:panelGroup style="float: right; padding-top: 5px;">
+					<p:commandButton actionListener="#{smcUserController.modify()}"
+						value="Modify" update="@form,:UserListForm,:messages"
+						oncomplete="handleSubmit(xhr,status,args,PF('UserEditDialog'));" />
+					<p:commandButton value="Cancel"
+						onclick="PF('UserEditDialog').hide()" immediate="true" />
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:form>
+	</p:dialog>
+</ui:composition>
+</html>

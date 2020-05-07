@@ -1,0 +1,7 @@
+<root>
+  <facet id="jpt.jaxb">
+    <node name="classgen">
+      <attribute name="package" value="ro.smc.engine.util.serialization"/>
+    </node>
+  </facet>
+</root>

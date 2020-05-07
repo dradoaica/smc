@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1"
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="SMCPU" transaction-type="JTA">
+		<jta-data-source>java:/jdbc/SMC</jta-data-source>
+		<class>ro.smc.frontend.entities.general.City</class>
+		<class>ro.smc.frontend.entities.general.Dictionary</class>
+		<class>ro.smc.frontend.entities.general.DictionaryItem</class>
+		<class>ro.smc.frontend.entities.general.PasswordRule</class>
+		<class>ro.smc.frontend.entities.general.Permission</class>
+		<class>ro.smc.frontend.entities.general.Person</class>
+		<class>ro.smc.frontend.entities.general.SMCUser</class>
+		<class>ro.smc.frontend.entities.general.UserGroup</class>
+		<class>ro.smc.frontend.entities.general.UserGroupXPermission</class>
+		<class>ro.smc.frontend.entities.general.Environment</class>
+		<class>ro.smc.frontend.entities.general.EnvDatabase</class>
+		<class>ro.smc.frontend.entities.general.ActivityLog</class>
+		<class>ro.smc.frontend.entities.configuration.AvailableConfiguration</class>
+		<class>ro.smc.frontend.entities.configuration.AvailablePackage</class>
+		<class>ro.smc.frontend.entities.configuration.DeployedConfiguration</class>
+		<class>ro.smc.frontend.entities.configuration.DeployedPackage</class>
+		<exclude-unlisted-classes>false</exclude-unlisted-classes>
+	</persistence-unit>
+</persistence>

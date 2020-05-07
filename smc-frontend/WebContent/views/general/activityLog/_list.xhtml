@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<h:form id="ActivityLogListForm">
+		<p:panel header="Activity log viewer">
+			<p:dataTable id="datalist" value="#{activityLogController.items}"
+				var="item" selectionMode="single"
+				selection="#{activityLogController.selected}"
+				rowKey="#{item.activityLogId}" paginator="true"
+				paginatorPosition="bottom" rows="15" rowsPerPageTemplate="15,25"
+				tableStyle="table-layout:fixed">
+				<p:ajax event="rowSelect" update="editButton" />
+				<p:ajax event="rowUnselect" update="editButton" />
+				<p:column sortBy="#{item.activityLogType.dictionaryItemCode}"
+					filterBy="#{item.activityLogType.dictionaryItemCode}"
+					filterMatchMode="contains" style="width:35%;">
+					<f:facet name="header">
+						<h:outputText value="Type" />
+					</f:facet>
+					<h:outputText value="#{item.activityLogType.dictionaryItemName}" />
+				</p:column>
+				<p:column sortBy="#{item.message}" filterBy="#{item.message}"
+					filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="Message" />
+					</f:facet>
+					<h:outputText value="#{item.message}"
+						style="text-wrap:none; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" />
+				</p:column>
+				<f:facet name="footer">
+					<hr />
+					<h:panelGroup layout="block" style="float: right">
+						<p:commandButton id="refreshButton" icon="ui-icon-refresh"
+							value="Refresh" update="@form,:messages"
+							actionListener="#{activityLogController.resetItems()}" />
+						<p:commandButton id="editButton" icon="ui-icon-pencil"
+							value="Edit"
+							actionListener="#{activityLogController.prepare4Modify()}"
+							update=":ActivityLogEditForm"
+							oncomplete="PF('ActivityLogEditDialog').show();"
+							disabled="#{empty activityLogController.selected}" />
+					</h:panelGroup>
+				</f:facet>
+			</p:dataTable>
+		</p:panel>
+	</h:form>
+</ui:composition>

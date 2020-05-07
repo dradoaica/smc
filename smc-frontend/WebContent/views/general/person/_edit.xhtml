@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<ui:composition>
+	<p:dialog id="PersonEditDlg" position="center center" draggable="false"
+		closable="false" widgetVar="PersonEditDialog" modal="true"
+		resizable="false" appendToBody="true" header="Modify person">
+		<h:form id="PersonEditForm">
+			<h:panelGroup id="display">
+				<p:panelGrid columns="6"
+					rendered="#{personController.selected != null}">
+					<p:outputLabel value="First name" for="firstName" />
+					<p:inputText id="firstName"
+						value="#{personController.selected.firstName}" />
+					<p:outputLabel value="Last name" for="lastName" />
+					<p:inputText id="lastName"
+						value="#{personController.selected.lastName}" />
+					<p:outputLabel value="E-Mail" for="e_Mail" />
+					<p:inputText id="e_Mail"
+						value="#{personController.selected.e_Mail}" />
+					<p:outputLabel value="Mobile phone" for="mobilePhone" />
+					<p:inputText id="mobilePhone"
+						value="#{personController.selected.mobilePhone}" />
+					<p:outputLabel value="Gender" for="genderId" />
+					<p:selectOneMenu id="genderId"
+						value="#{personController.selected.gender}" filter="true"
+						filterMatchMode="contains">
+						<f:selectItem itemLabel="(none)" itemValue="#{null}" />
+						<f:selectItems value="#{dictionaryItemController.genders}"
+							var="genderIdItem" itemValue="#{genderIdItem}"
+							itemLabel="#{genderIdItem.dictionaryItemName}" />
+						<f:converter binding="#{dictionaryItemConverter}" />
+					</p:selectOneMenu>
+					<p:outputLabel value="Registered city" for="registeredCityId" />
+					<p:autoComplete id="registeredCityId" forceSelection="true"
+						value="#{personController.selected.registeredCity}"
+						completeMethod="#{cityController.completeCities}"
+						var="registeredCityIdItem"
+						itemLabel="#{registeredCityIdItem.cityName}"
+						itemValue="#{registeredCityIdItem}" converter="#{cityConverter}"
+						minQueryLength="3" />
+					<p:outputLabel value="Registered district"
+						for="registeredDistrictId" />
+					<p:autoComplete id="registeredDistrictId" forceSelection="true"
+						value="#{personController.selected.registeredDistrict}"
+						completeMethod="#{cityController.completeDistricts}"
+						var="registeredDistrictIdItem"
+						itemLabel="#{registeredDistrictIdItem.cityName}"
+						itemValue="#{registeredDistrictIdItem}"
+						converter="#{cityConverter}" minQueryLength="3" />
+					<p:outputLabel value="Citizenship" for="citizenshipId" />
+					<p:autoComplete id="citizenshipId" forceSelection="true"
+						value="#{personController.selected.citizenship}"
+						completeMethod="#{cityController.completeCountries}"
+						var="citizenshipIdItem" itemLabel="#{citizenshipIdItem.cityName}"
+						itemValue="#{citizenshipIdItem}" converter="#{cityConverter}"
+						minQueryLength="3" />
+				</p:panelGrid>
+				<h:panelGroup style="float: right; padding-top: 5px;">
+					<p:commandButton actionListener="#{personController.modify()}"
+						value="Modify" update="@form,:PersonListForm,:messages"
+						oncomplete="handleSubmit(xhr,status,args,PF('PersonEditDialog'));" />
+					<p:commandButton value="Cancel"
+						onclick="PF('PersonEditDialog').hide()" immediate="true" />
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:form>
+	</p:dialog>
+</ui:composition>
+</html>

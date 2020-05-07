@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smcConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../src/ro/smc/frontend/util/smcConfig/smcConfig.xsd">
+  <encryption-key>00f3b996-8c1d-400f-a674-8d188b23d452</encryption-key>
+</smcConfig>

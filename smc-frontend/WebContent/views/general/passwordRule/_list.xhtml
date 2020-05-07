@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<h:form id="PasswordRuleListForm">
+		<p:panel header="Password rule administration">
+			<p:dataTable id="datalist" value="#{passwordRuleController.items}"
+				var="item" selectionMode="single"
+				selection="#{passwordRuleController.selected}"
+				rowKey="#{item.passwordRuleId}" paginator="true"
+				paginatorPosition="bottom" rows="15" rowsPerPageTemplate="15,25"
+				tableStyle="table-layout:fixed">
+				<p:ajax event="rowSelect"
+					update="createButton,editButton,deleteButton" />
+				<p:ajax event="rowUnselect"
+					update="createButton,editButton,deleteButton" />
+				<p:column sortBy="#{item.passwordRuleName}"
+					filterBy="#{item.passwordRuleName}" filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="Password rule name" />
+					</f:facet>
+					<h:outputText value="#{item.passwordRuleName}" />
+				</p:column>
+				<p:column sortBy="#{item.passwordRuleCode}"
+					filterBy="#{item.passwordRuleCode}" filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="Password rule code" />
+					</f:facet>
+					<h:outputText value="#{item.passwordRuleCode}" />
+				</p:column>
+				<p:column sortBy="#{item.allowChangePassword}" style="width:20%;">
+					<f:facet name="header">
+						<h:outputText value="Allow change pwd." />
+					</f:facet>
+					<p:selectBooleanCheckbox disabled="true"
+						value="#{item.allowChangePassword}" />
+				</p:column>
+				<f:facet name="footer">
+					<hr />
+					<h:panelGroup layout="block" style="float: right">
+						<p:commandButton id="refreshButton" icon="ui-icon-refresh"
+							value="Refresh" update="@form,:messages"
+							actionListener="#{passwordRuleController.resetItems()}" />
+						<p:commandButton id="createButton" icon="ui-icon-plus" value="Add"
+							actionListener="#{passwordRuleController.prepare4Add()}"
+							update=":PasswordRuleCreateForm"
+							oncomplete="PF('PasswordRuleCreateDialog').show();" />
+						<p:commandButton id="editButton" icon="ui-icon-pencil"
+							value="Edit"
+							actionListener="#{passwordRuleController.prepare4Modify()}"
+							update=":PasswordRuleEditForm"
+							oncomplete="PF('PasswordRuleEditDialog').show();"
+							disabled="#{empty passwordRuleController.selected}" />
+						<p:commandButton id="deleteButton" icon="ui-icon-trash"
+							value="Delete"
+							actionListener="#{passwordRuleController.delete()}"
+							update="@form,:messages"
+							disabled="#{empty passwordRuleController.selected}" />
+					</h:panelGroup>
+				</f:facet>
+			</p:dataTable>
+		</p:panel>
+	</h:form>
+</ui:composition>

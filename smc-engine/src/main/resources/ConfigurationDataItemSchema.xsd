@@ -1,0 +1,44 @@
+﻿<?xml version="1.0"?>
+<xs:schema xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="Schema">
+  <xs:element name="RootRow">
+    <xs:complexType >
+        <xs:complexContent>
+          <xs:extension base="BaseRow">
+          </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FragmentRow">
+    <xs:complexType >
+      <xs:complexContent>
+        <xs:extension base="BaseRow"></xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FragmentRows">
+    <xs:complexType >
+      <xs:sequence>
+        <xs:element ref="FragmentRow" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute name="fragmentName" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="BaseRow">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="fragmentName" type="xs:string" use="required"/>
+  </xs:complexType>
+  <xs:element name="ConfigurationDataItem" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="RootRow" minOccurs="1" maxOccurs="1"/>
+        <xs:sequence>
+          <xs:element ref="FragmentRows" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+			</xs:sequence>
+      <xs:attribute name="version" type="xs:string" use="required"/>
+      <xs:attribute name="configuration" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

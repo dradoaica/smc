@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<ui:composition>
+	<p:dialog id="EnvDatabaseCreateDlg" position="center center"
+		draggable="false" closable="false" widgetVar="EnvDatabaseCreateDialog"
+		modal="true" resizable="false" appendToBody="true"
+		header="Create new environment database">
+		<h:form id="EnvDatabaseCreateForm">
+			<h:panelGroup id="display">
+				<p:panelGrid columns="2"
+					rendered="#{envDatabaseController.selected != null}">
+					<p:outputLabel value="Code" for="code" />
+					<p:inputText id="code"
+						value="#{envDatabaseController.selected.envDatabaseCode}" />
+					<p:outputLabel value="Name" for="name" />
+					<p:inputText id="name"
+						value="#{envDatabaseController.selected.envDatabaseName}" />
+					<p:outputLabel value="Mask" for="mask" />
+					<p:inputText id="mask"
+						value="#{envDatabaseController.selected.mask}" />
+					<p:outputLabel value="Environment" for="environmentId" />
+					<p:selectOneMenu id="environmentId"
+						value="#{envDatabaseController.selected.environment}"
+						filter="true" filterMatchMode="contains">
+						<f:selectItem itemLabel="(none)" itemValue="#{null}" />
+						<f:selectItems value="#{environmentController.items}"
+							var="environmentIdItem" itemValue="#{environmentIdItem}"
+							itemLabel="#{environmentIdItem.environmentCode}" />
+						<f:converter binding="#{environmentConverter}" />
+					</p:selectOneMenu>
+					<p:outputLabel value="Server name" for="serverName" />
+					<p:inputText id="serverName"
+						value="#{envDatabaseController.selected.serverName}" />
+					<p:outputLabel value="Database name" for="databaseName" />
+					<p:inputText id="databaseName"
+						value="#{envDatabaseController.selected.databaseName}" />
+					<p:outputLabel value="User name" for="userName" />
+					<p:inputText id="userName"
+						value="#{envDatabaseController.selected.userName}" />
+					<p:outputLabel value="Password" for="password" />
+					<p:inputText id="password" type="password"
+						value="#{envDatabaseController.selected.password}" />
+					<p:outputLabel value="Additional info" for="additionalInfo" />
+					<p:inputTextarea id="additionalInfo"
+						value="#{envDatabaseController.selected.additionalInfo}" />
+				</p:panelGrid>
+				<h:panelGroup style="float: right; padding-top: 5px;">
+					<p:commandButton actionListener="#{envDatabaseController.add()}"
+						value="Add" update="@form,:EnvDatabaseListForm,:messages"
+						oncomplete="handleSubmit(xhr,status,args,PF('EnvDatabaseCreateDialog'));" />
+					<p:commandButton value="Cancel"
+						onclick="PF('EnvDatabaseCreateDialog').hide()" immediate="true" />
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:form>
+	</p:dialog>
+</ui:composition>
+</html>

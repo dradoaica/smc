@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<ui:composition>
+	<p:dialog id="DeployedPackageEditDlg" position="center center"
+		draggable="false" closable="false"
+		widgetVar="DeployedPackageEditDialog" modal="true" resizable="false"
+		appendToBody="true" header="View deployed package">
+		<h:form id="DeployedPackageEditForm">
+			<h:panelGroup id="display">
+				<p:panelGrid columns="8"
+					rendered="#{deployedPackageController.selected != null}">
+					<p:outputLabel value="Code" for="code" />
+					<p:inputText id="code" disabled="true"
+						value="#{deployedPackageController.selected.deployedPackageCode}" />
+					<p:outputLabel value="Name" for="name" />
+					<p:inputText id="name" disabled="true"
+						value="#{deployedPackageController.selected.deployedPackageName}" />
+					<p:outputLabel value="State" for="state" />
+					<p:inputText id="state" disabled="true"
+						value="#{deployedPackageController.selected.packageState.dictionaryItemName}" />
+					<p:outputLabel value="Target mask" for="targetMask" />
+					<p:inputText id="targetMask" disabled="true"
+						value="#{deployedPackageController.selected.targetMask}" />
+				</p:panelGrid>
+				<p:dataTable id="configurations"
+					styleClass="configurations-datatable"
+					rendered="#{deployedPackageController.selected != null}"
+					value="#{deployedPackageController.selected.configurations}"
+					var="item" selectionMode="single"
+					selection="#{availablePackageController.selectedConfiguration}"
+					rowKey="#{item.deployedConfigurationId}" paginator="true"
+					paginatorPosition="bottom" rows="10"
+					tableStyle="table-layout:auto;">
+					<p:column sortBy="#{item.deployedConfigurationName}"
+						filterBy="#{item.deployedConfigurationName}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Name" />
+						</f:facet>
+						<h:outputText value="#{item.deployedConfigurationName}" />
+					</p:column>
+					<p:column sortBy="#{item.type}" filterBy="#{item.type}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Type" />
+						</f:facet>
+						<h:outputText value="#{item.type}" />
+					</p:column>
+					<p:column sortBy="#{item.deployOrder}"
+						filterBy="#{item.deployOrder}" filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Deploy order" />
+						</f:facet>
+						<h:outputText value="#{item.deployOrder}" />
+					</p:column>
+				</p:dataTable>
+				<h:panelGroup style="float: right; padding-top: 5px;">
+					<p:commandButton value="Cancel"
+						onclick="PF('DeployedPackageEditDialog').hide()" immediate="true" />
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:form>
+	</p:dialog>
+</ui:composition>
+</html>

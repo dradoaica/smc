@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<xs:schema xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="Schema">
+	<xs:include schemaLocation="ConfigurationDataItemSchema.xsd"/>
+	<xs:element name="ConfigurationSqlItem">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Definition" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			</xs:sequence>
+			<xs:attribute name="name" type="xs:string"/>
+			<xs:attribute name="sqlObjectType" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ConfigurationItems">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ConfigurationDataItem" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="ConfigurationSqlItem" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ExternalConfigurations">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ExternalConfigurationKey" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="FieldValue">
+		<xs:complexType>
+			<xs:attribute name="name" type="xs:string" use="required"/>
+			<xs:attribute name="value" type="xs:string" use="required"/>
+			<xs:attribute name="type" type="xs:string" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="PrimaryKeys">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="FieldValue" minOccurs="1" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ExternalConfigurationKey">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="PrimaryKeys" minOccurs="1" maxOccurs="1"/>
+			</xs:sequence>
+			<xs:attribute name="configurationName" type="xs:string" use="required"/>
+			<xs:attribute name="id" type="xs:string" use="required"/>
+			<xs:attribute name="relationName" type="xs:string" use="required"/>
+			<xs:attribute name="fragmentName" type="xs:string" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ConfigurationInstance">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ConfigurationItems" minOccurs="1" maxOccurs="1"/>
+				<xs:element ref="ExternalConfigurations" minOccurs="1" maxOccurs="1"/>
+			</xs:sequence>
+			<xs:attribute name="id" type="xs:string" use="required"/>
+			<xs:attribute name="version" type="xs:string" use="required"/>
+			<xs:attribute name="configurationName" type="xs:string" use="required"/>
+			<xs:attribute name="configurationHash" type="xs:string" use="required"/>
+			<xs:attribute name="description" type="xs:string" use="required"/>
+			<xs:attribute name="includesSecurity" type="xs:boolean" use="required"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

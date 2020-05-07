@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<h:form id="CityListForm">
+		<p:panel header="City administration">
+			<p:dataTable id="datalist" value="#{cityController.items}" var="item"
+				selectionMode="single" selection="#{cityController.selected}"
+				rowKey="#{item.cityId}" paginator="true" paginatorPosition="bottom"
+				rows="15" rowsPerPageTemplate="15,25"
+				tableStyle="table-layout:fixed">
+				<p:ajax event="rowSelect"
+					update="createButton,editButton,deleteButton" />
+				<p:ajax event="rowUnselect"
+					update="createButton,editButton,deleteButton" />
+				<p:column sortBy="#{item.cityName}" filterBy="#{item.cityName}"
+					filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="City name" />
+					</f:facet>
+					<h:outputText value="#{item.cityName}" />
+				</p:column>
+				<p:column sortBy="#{item.cityCode}" filterBy="#{item.cityCode}"
+					filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="City code" />
+					</f:facet>
+					<h:outputText value="#{item.cityCode}" />
+				</p:column>
+				<p:column sortBy="#{item.cityType.dictionaryItemName}"
+					filterBy="#{item.cityType.dictionaryItemName}"
+					filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="City type" />
+					</f:facet>
+					<h:outputText value="#{item.cityType.dictionaryItemName}" />
+				</p:column>
+				<f:facet name="footer">
+					<hr />
+					<h:panelGroup layout="block" style="float: right">
+						<p:commandButton id="refreshButton" icon="ui-icon-refresh"
+							value="Refresh" update="@form,:messages"
+							actionListener="#{cityController.resetItems()}" />
+						<p:commandButton id="createButton" icon="ui-icon-plus" value="Add"
+							actionListener="#{cityController.prepare4Add()}"
+							update=":CityCreateForm"
+							oncomplete="PF('CityCreateDialog').show();" />
+						<p:commandButton id="editButton" icon="ui-icon-pencil"
+							value="Edit" actionListener="#{cityController.prepare4Modify()}"
+							update=":CityEditForm" oncomplete="PF('CityEditDialog').show();"
+							disabled="#{empty cityController.selected}" />
+						<p:commandButton id="deleteButton" icon="ui-icon-trash"
+							value="Delete" actionListener="#{cityController.delete()}"
+							update="@form,:messages"
+							disabled="#{empty cityController.selected}" />
+					</h:panelGroup>
+				</f:facet>
+			</p:dataTable>
+		</p:panel>
+	</h:form>
+</ui:composition>

@@ -1,0 +1,267 @@
+/*simple elements*/
+body {
+	color: #323232;
+	font: 400 14px;
+	padding-bottom: 40px;
+	background-color: #F8F8F8;
+	padding-bottom: 40px;
+}
+
+a {
+	color: #218048;
+}
+
+a:hover {
+	color: #175731;
+	border-radius: 3px;
+}
+
+hr {
+	border-width: 1px 0 0;
+}
+
+/*scroll to top*/
+.scroll-top {
+	position: fixed !important;
+	transform: scale(0.8);
+	bottom: 10px;
+	right: 10px;
+	width: 55px;
+	height: 60px;
+	background: url("#{resource['img/scroll-up.png']}") no-repeat;
+	background-position: 0 0;
+}
+
+.scroll-top:hover {
+	background-position: -55px 0;
+	cursor: pointer;
+}
+
+.scroll-top.scroll-top-hidden {
+	display: none;
+}
+
+/*expandable text*/
+.exp-wrapper {
+	height: auto;
+	width: auto;
+	margin: 0 auto;
+	padding: 0 0 48px 0;
+	position: relative;
+}
+
+.exp-wrapper div {
+	overflow: hidden;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #e9e9e9;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+
+.exp-wrapper label {
+	font-weight: bold;
+}
+
+.exp-wrapper a {
+	left: 50%;
+	bottom: 26px;
+	width: 100px;
+	margin: -1px 0 5px -72px;
+	border: solid 1px #e9e9e9;
+	border-top: none;
+	border-radius: 0 0 3px 3px;
+	display: block;
+	overflow: hidden;
+	font-size: 14px;
+	position: absolute;
+	text-align: center;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.exp-wrapper a:focus {
+	outline: none;
+}
+
+.exp-wrapper a:hover {
+	background-color: #e3e1e1;
+	border-top: 1px solid #e3e1e1;
+	border-radius: 3px;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+
+.exp-wrapper.exp-less {
+	margin-top: -24px;
+	opacity: 0;
+	z-index: -1;
+}
+
+.exp-wrapper.exp-text {
+	padding: 4px 16px;
+	border-bottom: solid 1px #e9e9e9;
+	border-top: solid 1px #e9e9e9;
+	border-radius: 2px;
+	position: relative;
+}
+
+/*primefaces elements by class*/
+.ui-state-disabled, .ui-widget-content.ui-state-disabled,
+	.ui-widget-header.ui-state-disabled {
+	opacity: 0.7 !important;
+}
+
+.ui-inputfield {
+	width: 180px;
+}
+
+.ui-selectonemenu-filter.ui-inputfield {
+	width: 150px !important;
+	padding-right: 0px !important;
+}
+
+.ui-selectonemenu.ui-widget {
+	width: 158px !important;
+}
+
+.ui-menu.ui-menubar.ui-widget {
+	background-image: none;
+	padding-bottom: 0px;
+	padding-top: 0px;
+	background: #e3e1e1;
+}
+
+.ui-widget-overlay {
+	opacity: .10
+}
+
+.ui-menu.ui-menubar.ui-widget a {
+	color: #808080;
+	font: 400 18px 'Helvetica Neue', 'Tahoma', Helvetica, Arial, sans-serif;
+	line-height: 100%;
+	color: black;
+}
+
+.ui-menu.ui-menubar.ui-widget>.ui-menu-list>li {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	padding: 0px 2px 0px 2px;
+}
+
+.ui-menu.ui-menubar.ui-widget>.ui-menu-list>li>a {
+	padding: 10px 2px 10px 2px;
+}
+
+.ui-widget-content.ui-menu-list.ui-menu-child {
+	background: #e3e1e1;
+	border: 1px solid #d4d4d4;
+}
+
+.ui-menu.ui-menubar.ui-widget li>.ui-menuitem-link.ui-state-hover {
+	background: #fafafa;
+	color: black;
+	background-image: none;
+}
+
+.ui-menu.ui-menubar.ui-widget li>.ui-menuitem-link.ui-state-hover .ui-icon
+	{
+	background-image:
+		url("/smc-frontend/javax.faces.resource/images/ui-icons_333333_256x240.png.xhtml?ln=primefaces-bootstrap");
+}
+
+.ui-widget.ui-menuitem:last-child {
+	float: right;
+}
+
+.ui-widget.ui-menuitem.user-menu {
+	float: right;
+}
+
+.ui-widget.ui-menuitem.user-menu ul {
+	width: 150px;
+}
+
+.ui-menuitem-link.environment-menu {
+	background: #218048;
+	color: white !important;
+}
+
+.ui-menuitem-link.environment-menu:hover {
+	background: #218048 !important;
+}
+
+.ui-datatable-odd {
+	background-color: #ffffff;
+}
+
+.ui-datatable.ui-widget td {
+	padding-left: 4px;
+}
+
+.ui-datatable.ui-widget th {
+	background-image: none;
+	border-radius: 0px;
+}
+
+.ui-datatable-footer.ui-widget-header.ui-corner-bottom {
+	padding: 0px;
+	border: 0px;
+}
+
+.ui-panel.ui-widget {
+	padding-bottom: 30px;
+}
+
+.ui-column-filter.ui-inputfield.ui-inputtext {
+	display: inline-block;
+}
+
+.ui-datatable.ui-widget.configurations-datatable>.ui-datatable-header {
+	text-align: left;
+}
+
+/*custom elements by id*/
+#content {
+	width: 1200px;
+	margin: 0 auto;
+}
+
+#header {
+	height: 80px;
+}
+
+#header_left {
+	width: 20%;
+	float: left;
+	display: inline;
+}
+
+#header_left img {
+	padding-top: 2px;
+}
+
+#header_right {
+	width: 75%;
+	float: right;
+	display: inline;
+	padding-top: 10px;
+}
+
+#loginContent {
+	padding-top: 150px;
+}
+
+#loginLogo {
+	padding-bottom: 20px;
+	padding-top: 20px;
+}
+
+#loginForm {
+	padding-bottom: 10px;
+	padding-top: 10px;
+}
+
+#loginPanel {
+	width: 450px;
+}

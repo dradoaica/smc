@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<h:form id="EnvDatabaseListForm">
+		<p:panel header="Environment database administration">
+			<p:dataTable id="datalist" value="#{envDatabaseController.items}"
+				var="item" selectionMode="single"
+				selection="#{envDatabaseController.selected}"
+				rowKey="#{item.envDatabaseId}" paginator="true"
+				paginatorPosition="bottom" rows="15" rowsPerPageTemplate="15,25"
+				tableStyle="table-layout:fixed">
+				<p:ajax event="rowSelect"
+					update="createButton,editButton,deleteButton" />
+				<p:ajax event="rowUnselect"
+					update="createButton,editButton,deleteButton" />
+				<p:column sortBy="#{item.envDatabaseCode}"
+					filterBy="#{item.envDatabaseCode}" filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="Code" />
+					</f:facet>
+					<h:outputText value="#{item.envDatabaseCode}" />
+				</p:column>
+				<p:column sortBy="#{item.envDatabaseName}"
+					filterBy="#{item.envDatabaseName}" filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="Name" />
+					</f:facet>
+					<h:outputText value="#{item.envDatabaseName}" />
+				</p:column>
+				<p:column sortBy="#{item.mask}" filterBy="#{item.mask}"
+					filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="Mask" />
+					</f:facet>
+					<h:outputText value="#{item.mask}" />
+				</p:column>
+				<p:column sortBy="#{item.environment.environmentCode}"
+					filterBy="#{item.environment.environmentCode}"
+					filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="Environment" />
+					</f:facet>
+					<h:outputText value="#{item.environment.environmentCode}" />
+				</p:column>
+				<f:facet name="footer">
+					<hr />
+					<h:panelGroup layout="block" style="float: right">
+						<p:commandButton id="refreshButton" icon="ui-icon-refresh"
+							value="Refresh" update="@form,:messages"
+							actionListener="#{envDatabaseController.resetItems()}" />
+						<p:commandButton id="createButton" icon="ui-icon-plus" value="Add"
+							actionListener="#{envDatabaseController.prepare4Add()}"
+							update=":EnvDatabaseCreateForm"
+							oncomplete="PF('EnvDatabaseCreateDialog').show();" />
+						<p:commandButton id="editButton" icon="ui-icon-pencil"
+							value="Edit"
+							actionListener="#{envDatabaseController.prepare4Modify()}"
+							update=":EnvDatabaseEditForm"
+							oncomplete="PF('EnvDatabaseEditDialog').show();"
+							disabled="#{empty envDatabaseController.selected}" />
+						<p:commandButton id="deleteButton" icon="ui-icon-trash"
+							value="Delete" actionListener="#{envDatabaseController.delete()}"
+							update="@form,:messages"
+							disabled="#{empty envDatabaseController.selected}" />
+					</h:panelGroup>
+				</f:facet>
+			</p:dataTable>
+		</p:panel>
+	</h:form>
+</ui:composition>

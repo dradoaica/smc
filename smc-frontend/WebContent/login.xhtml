@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	</f:facet>
+	<f:facet name="last">
+		<h:outputStylesheet name="css/smc.css" />
+	</f:facet>
+	<title><ui:insert name="title">Login</ui:insert></title>
+</h:head>
+<h:body>
+	<div id="loginContent" align="center">
+		<p:panel id="loginPanel">
+			<div id="loginLogo">
+				<p:graphicImage value="/resources/img/large-logo.png" />
+			</div>
+			<h:form id="loginForm">
+				<table>
+					<tr>
+						<td><strong>User name: </strong></td>
+						<td><p:inputText id="j_username" size="20"
+								value="#{accountController.lastLoginName}" /></td>
+					</tr>
+					<tr>
+						<td><strong>Password: </strong></td>
+						<td><p:inputText type="password" size="20" id="j_password"
+								value="#{accountController.password}" /></td>
+					</tr>
+					<tr>
+						<td><h:selectBooleanCheckbox
+								value="#{accountController.rememberMe}" id="remember_me" /> <h:outputLabel
+								value="  Remember me" for="remember_me" /></td>
+						<td>
+							<div style="float: right">
+								<p:commandButton action="#{accountController.login()}"
+									value="Login" ajax="false"></p:commandButton>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</h:form>
+			<p:messages globalOnly="true" />
+		</p:panel>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			if ($('#loginForm\\:j_username').attr('value') === '') {
+				$('#loginForm\\:j_username').focus();
+			} else {
+				$('#loginForm\\:j_password').focus();
+			}
+		});
+	</script>
+</h:body>
+</html>

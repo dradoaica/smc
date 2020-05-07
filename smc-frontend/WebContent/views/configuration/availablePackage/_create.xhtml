@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<ui:composition>
+	<ui:include src="_configurations.xhtml" />
+	<p:dialog id="AvailablePackageCreateDlg" position="center center"
+		draggable="false" closable="false"
+		widgetVar="AvailablePackageCreateDialog" modal="true"
+		resizable="false" appendToBody="true"
+		header="Create new available package">
+		<h:form id="AvailablePackageCreateForm">
+			<h:panelGroup id="display">
+				<p:panelGrid columns="8"
+					rendered="#{availablePackageController.selected != null}">
+					<p:outputLabel value="Code" for="code" />
+					<p:inputText id="code"
+						value="#{availablePackageController.selected.availablePackageCode}" />
+					<p:outputLabel value="Name" for="name" />
+					<p:inputText id="name"
+						value="#{availablePackageController.selected.availablePackageName}" />
+					<p:outputLabel value="State" for="state" />
+					<p:inputText id="state" disabled="true"
+						value="#{availablePackageController.selected.packageState.dictionaryItemName}" />
+					<p:outputLabel value="Target mask" for="targetMask" />
+					<p:inputText id="targetMask"
+						value="#{availablePackageController.selected.targetMask}" />
+				</p:panelGrid>
+				<p:dataTable id="configurations"
+					styleClass="configurations-datatable"
+					rendered="#{availablePackageController.selected != null}"
+					value="#{availablePackageController.selected.configurations}"
+					var="item" selectionMode="single"
+					selection="#{availablePackageController.selectedConfiguration}"
+					rowKey="#{item.availableConfigurationId}" paginator="true"
+					paginatorPosition="bottom" rows="10"
+					tableStyle="table-layout:auto;">
+					<p:ajax event="rowSelect"
+						update="addConfigurationButton,deleteConfigurationButton" />
+					<p:ajax event="rowUnselect"
+						update="addConfigurationButton,deleteConfigurationButton" />
+					<p:column sortBy="#{item.availableConfigurationName}"
+						filterBy="#{item.availableConfigurationName}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Name" />
+						</f:facet>
+						<h:outputText value="#{item.availableConfigurationName}" />
+					</p:column>
+					<p:column sortBy="#{item.type}" filterBy="#{item.type}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Type" />
+						</f:facet>
+						<h:outputText value="#{item.type}" />
+					</p:column>
+					<p:column sortBy="#{item.deployOrder}"
+						filterBy="#{item.deployOrder}" filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Deploy order" />
+						</f:facet>
+						<h:outputText value="#{item.deployOrder}" />
+					</p:column>
+					<f:facet name="header">
+						<h:panelGroup layout="block">
+							<p:commandButton value="Add config." id="addConfigurationButton"
+								oncomplete="PF('ConfigurationsDialog').show();" />
+							<p:commandButton value="Delete config."
+								id="deleteConfigurationButton"
+								actionListener="#{availablePackageController.deleteConfiguration()}"
+								update="@form,:messages"
+								disabled="#{empty availablePackageController.selectedConfiguration}" />
+						</h:panelGroup>
+					</f:facet>
+				</p:dataTable>
+				<h:panelGroup style="float: right; padding-top: 5px;">
+					<p:commandButton
+						actionListener="#{availablePackageController.add()}" value="Add"
+						update="@form,:AvailablePackageListForm,:messages"
+						oncomplete="handleSubmit(xhr,status,args,PF('AvailablePackageCreateDialog'));" />
+					<p:commandButton value="Cancel"
+						onclick="PF('AvailablePackageCreateDialog').hide()"
+						immediate="true" />
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:form>
+	</p:dialog>
+</ui:composition>
+</html>

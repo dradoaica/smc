@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="Schema">
+	<xs:simpleType name="PrimaryKeyType" final="restriction">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="None" />
+			<xs:enumeration value="Identity" />
+			<xs:enumeration value="UniqueidentifierIdentity" />
+			<xs:enumeration value="UserSupplied" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SqlObjectType" final="restriction">
+		<xs:restriction base="xs:string">
+      		<xs:enumeration value="None"/>
+      		<xs:enumeration value="StoredProcedure"/>
+   		    <xs:enumeration value="View"/>
+      		<xs:enumeration value="Table"/>
+      		<xs:enumeration value="Function"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ComputedExpressionOperation" final="restriction">
+	    <xs:restriction base="xs:string">
+      		<xs:enumeration value="All"/>
+      		<xs:enumeration value="Insert"/>
+      		<xs:enumeration value="Update"/>
+    	</xs:restriction>
+    </xs:simpleType>
+	<xs:element name="SqlObjectReference">
+		<xs:complexType>
+			<xs:attribute name="kind" type="SqlObjectType" use="required" />
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ComputedExpression">
+    	<xs:complexType>
+      		<xs:attribute name="operation" type="ComputedExpressionOperation" use="required"/>
+      		<xs:attribute name="expression" type="xs:string" use="required"/>
+    	</xs:complexType>
+  	</xs:element>
+	<xs:element name="Field">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="SqlObjectReference" minOccurs="0" maxOccurs="unbounded" />
+				<xs:element ref="ComputedExpression" minOccurs="0" maxOccurs="1"/>
+			</xs:sequence>
+			<xs:attribute name="name" type="xs:string" />
+			<xs:attribute name="dataType" type="xs:string" />
+			<xs:attribute name="dataLength" type="xs:int" />
+			<xs:attribute name="nullable" type="xs:boolean" default="0" />
+			<xs:attribute name="computed" type="xs:boolean" default="0" />
+			<xs:attribute name="primaryKey" type="xs:boolean" default="0" />
+			<xs:attribute name="logicalKey" type="xs:boolean" default="0" />
+			<xs:attribute name="isIdentity" type="xs:boolean" default="0" />
+			<xs:attribute name="alias" type="xs:string" use="optional" />
+			<xs:attribute name="includeInHash" type="xs:boolean" default="1"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Fields">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Field" minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ConfigurationFragment">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Fields" minOccurs="0" maxOccurs="1" />
+			</xs:sequence>
+			<xs:attribute name="primaryKeyType" type="PrimaryKeyType" use="optional" default="None" />
+			<xs:attribute name="name" type="xs:string" use="required" />
+			<xs:attribute name="table" type="xs:string" />
+         	<xs:attribute name="version" type="xs:string" use="optional"/>
+			<xs:attribute name="external" type="xs:boolean" />
+			<xs:attribute name="externalFragmentName" type="xs:string" use="optional" />
+			<xs:attribute name="parentRelation" type="xs:string" />
+			<xs:attribute name="link" type="xs:string" />
+			<xs:attribute name="descriptionField" type="xs:string" />
+      		<xs:attribute name="activeField" type="xs:string" use="optional"/>
+      		<xs:attribute name="ownerFragment" type="xs:string" use="optional"/>
+      		<xs:attribute name="tableFilter" type="xs:string" use="optional"/>
+      		<xs:attribute name="loadFrom" type="xs:string" use="optional"/>
+      		<xs:attribute name="beforeFragment" type="xs:string" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Fragments">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ConfigurationFragment" minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Relation">
+		<xs:complexType>
+			<xs:attribute name="name" type="xs:string" use="required" />
+			<xs:attribute name="parent" type="xs:string" use="required" />
+			<xs:attribute name="child" type="xs:string" use="required" />
+			<xs:attribute name="parentColumns" type="xs:string" use="required" />
+			<xs:attribute name="childColumns" type="xs:string" use="required" />
+			<xs:attribute name="external" type="xs:boolean" use="optional" />
+			<xs:attribute name="externalConfiguration" type="xs:string" use="optional" />
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Relations">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Relation" minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Configuration">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Fragments" minOccurs="0" maxOccurs="1" />
+				<xs:element ref="Relations" minOccurs="0" maxOccurs="1" />
+			</xs:sequence>
+			<xs:attribute name="name" type="xs:string" use="required" />
+			<xs:attribute name="external" type="xs:boolean" use="optional" default="0" />
+			<xs:attribute name="browsable" type="xs:boolean" use="optional" default="1" />
+			<xs:attribute name="displayName" type="xs:string" use="optional" default="" />
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Configurations">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Configuration" minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Schema" msdata:IsDataSet="true"
+		msdata:UseCurrentLocale="true">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Configurations" minOccurs="1" maxOccurs="1" />
+			</xs:sequence>
+			<xs:attribute name="version" type="xs:string" use="optional"/>
+			<xs:attribute name="defaultProvider" type="xs:string" use="optional" default=""/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

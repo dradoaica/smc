@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<ui:composition>
+	<p:dialog id="PasswordRuleEditDlg" position="center center"
+		draggable="false" closable="false" widgetVar="PasswordRuleEditDialog"
+		modal="true" resizable="false" appendToBody="true"
+		header="Modify password rule">
+		<h:form id="PasswordRuleEditForm">
+			<h:panelGroup id="display">
+				<p:panelGrid columns="2"
+					rendered="#{passwordRuleController.selected != null}">
+					<p:outputLabel value="Password rule name" for="passwordRuleName" />
+					<p:inputText id="passwordRuleName"
+						value="#{passwordRuleController.selected.passwordRuleName}" />
+					<p:outputLabel value="Password rule code" for="passwordRuleCode" />
+					<p:inputText id="passwordRuleCode"
+						value="#{passwordRuleController.selected.passwordRuleCode}" />
+					<p:outputLabel value="Password rule description"
+						for="passwordRuleDescription" />
+					<p:inputTextarea id="passwordRuleDescription"
+						value="#{passwordRuleController.selected.passwordRuleDescription}"
+						rows="3" cols="30" autoResize="true" />
+					<p:outputLabel value="Password min. length" for="passwordMinLen" />
+					<p:inputNumber id="passwordMinLen"
+						value="#{passwordRuleController.selected.passwordMinLen}"
+						decimalPlaces="0" />
+					<p:outputLabel value="Password min. alpha char"
+						for="minAlphaCharNumber" />
+					<p:inputNumber id="minAlphaCharNumber"
+						value="#{passwordRuleController.selected.minAlphaCharNumber}"
+						decimalPlaces="0" />
+					<p:outputLabel value="Password min. digit" for="minDigitNumber" />
+					<p:inputNumber id="minDigitNumber"
+						value="#{passwordRuleController.selected.minDigitNumber}"
+						decimalPlaces="0" />
+					<p:outputLabel value="Password min. lower case"
+						for="minLowerCaseNumber" />
+					<p:inputNumber id="minLowerCaseNumber"
+						value="#{passwordRuleController.selected.minLowerCaseNumber}"
+						decimalPlaces="0" />
+					<p:outputLabel value="Password min. upper case"
+						for="minUpperCaseNumber" />
+					<p:inputNumber id="minUpperCaseNumber"
+						value="#{passwordRuleController.selected.minUpperCaseNumber}"
+						decimalPlaces="0" />
+					<p:outputLabel value="Special char list" for="specialCharList" />
+					<p:inputText id="specialCharList"
+						value="#{passwordRuleController.selected.specialCharList}" />
+					<p:outputLabel value="Password min. special char"
+						for="minSpecialCharNumber" />
+					<p:inputNumber id="minSpecialCharNumber"
+						value="#{passwordRuleController.selected.minSpecialCharNumber}"
+						decimalPlaces="0" />
+					<p:outputLabel value="Allow change pwd." for="allowChangePassword" />
+					<p:selectBooleanCheckbox id="allowChangePassword"
+						value="#{passwordRuleController.selected.allowChangePassword}" />
+				</p:panelGrid>
+				<h:panelGroup style="float: right; padding-top: 5px;">
+					<p:commandButton
+						actionListener="#{passwordRuleController.modify()}" value="Modify"
+						update="@form,:PasswordRuleListForm,:messages"
+						oncomplete="handleSubmit(xhr,status,args,PF('PasswordRuleEditDialog'));" />
+					<p:commandButton value="Cancel"
+						onclick="PF('PasswordRuleEditDialog').hide()" immediate="true" />
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:form>
+	</p:dialog>
+</ui:composition>
+</html>

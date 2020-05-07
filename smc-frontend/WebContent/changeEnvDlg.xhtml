@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<ui:composition>
+	<p:dialog id="ChangeCurrentEnvDlg" position="center center"
+		draggable="false" closable="false" widgetVar="ChangeCurrentEnvDlg"
+		modal="true" resizable="false" appendToBody="true"
+		header="Change current environment">
+		<h:form id="CurrentEnvironmentEditForm">
+			<h:panelGroup id="display">
+				<p:panelGrid columns="2">
+					<p:outputLabel value="Current environment" for="currentEnvironment" />
+					<p:selectOneMenu id="currentEnvironment"
+						value="#{accountController.auxEnvironment}" filter="true"
+						filterMatchMode="contains">
+						<f:selectItems value="#{environmentController.items}"
+							var="environmentIdItem" itemValue="#{environmentIdItem}"
+							itemLabel="#{environmentIdItem.environmentCode}" />
+						<f:converter binding="#{environmentConverter}" />
+					</p:selectOneMenu>
+				</p:panelGrid>
+				<h:panelGroup style="float: right; padding-top: 5px;">
+					<p:commandButton
+						action="#{accountController.changeCurrentEnvironment()}"
+						value="Ok" update="@form,:messages,:content"
+						oncomplete="handleSubmit(xhr,status,args,PF('ChangeCurrentEnvDlg'));" />
+					<p:commandButton value="Cancel"
+						onclick="PF('ChangeCurrentEnvDlg').hide()" immediate="true" />
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:form>
+	</p:dialog>
+</ui:composition>
+</html>

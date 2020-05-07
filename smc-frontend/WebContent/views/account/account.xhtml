@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="/template.xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="body">
+		<h:form id="AccountForm">
+			<p:panel header="Account administration">
+				<h:panelGrid border="0" columns="2">
+					<p:outputLabel value="Old password:  " for="oldPassword" />
+					<p:inputText id="oldPassword" type="password"
+						value="#{accountController.oldPassword}" />
+					<p:outputLabel value="New password:  " for="newPassword" />
+					<p:inputText id="newPassword" type="password"
+						value="#{accountController.newPassword}" />
+					<p:outputLabel value="Confirm new password:  "
+						for="confirmNewPassword" />
+					<p:inputText id="confirmNewPassword" type="password"
+						value="#{accountController.confirmNewPassword}" />
+				</h:panelGrid>
+				<f:facet name="footer">
+					<h:panelGroup layout="block" style="float: right">
+						<p:commandButton icon="ui-icon-disk"
+							actionListener="#{accountController.saveAccount()}" value="Save"
+							update="@form,:messages" />
+						<p:commandButton value="Exit" icon="ui-icon-close" action="/index"
+							ajax="false" />
+					</h:panelGroup>
+				</f:facet>
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

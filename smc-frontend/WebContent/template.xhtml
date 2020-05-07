@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<h:head>
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	</f:facet>
+	<f:facet name="last">
+		<h:outputStylesheet name="css/smc.css" />
+	</f:facet>
+	<title>SMC</title>
+</h:head>
+<h:body>
+	<ui:include src="changeEnvDlg.xhtml" />
+	<p:ajaxStatus onstart="PF('statusDialog').show();"
+		onsuccess="PF('statusDialog').hide();" />
+	<p:dialog modal="true" widgetVar="statusDialog" header="Status"
+		draggable="false" closable="false" resizable="false"
+		showHeader="false">
+		<p:graphicImage value="/resources/img/ajax-loader.gif" />
+	</p:dialog>
+	<p:growl id="messages" showDetail="false" sticky="false" />
+	<h:panelGroup id="content" layout="block">
+		<div id="header">
+			<div id="header_left">
+				<p:link outcome="/index">
+					<p:graphicImage value="/resources/img/small-logo.png" />
+				</p:link>
+			</div>
+			<div id="header_right">
+				<div id="menu">
+					<h:form>
+						<p:menubar>
+							<p:menuitem value="Home" icon="ui-icon-home" outcome="/index" />
+							<p:submenu label="General">
+								<p:submenu label="Dictionary">
+									<p:menuitem value="Dictionary"
+										outcome="/views/general/dictionary/index" />
+									<p:menuitem value="City" outcome="/views/general/city/index" />
+								</p:submenu>
+								<p:submenu label="User"
+									rendered="#{accountController.isCallerInRole('Admin')}">
+									<p:menuitem value="User" outcome="/views/general/user/index" />
+									<p:menuitem value="Password rule"
+										outcome="/views/general/passwordRule/index" />
+									<p:menuitem value="Person"
+										outcome="/views/general/person/index" />
+									<p:menuitem value="User group"
+										outcome="/views/general/userGroup/index" />
+								</p:submenu>
+								<p:menuitem value="Environment"
+									outcome="/views/general/environment/index" />
+								<p:menuitem value="Environment database"
+									outcome="/views/general/envDatabase/index" />
+								<p:menuitem value="Activity log"
+									outcome="/views/general/activityLog/index" />
+							</p:submenu>
+							<p:submenu label="Configuration">
+								<p:menuitem value="Available package"
+									outcome="/views/configuration/availablePackage/index" />
+								<p:menuitem value="Deployed package"
+									outcome="/views/configuration/deployedPackage/index" />
+							</p:submenu>
+							<p:submenu label="#{accountController.lastLoginName}"
+								styleClass="user-menu">
+								<p:menuitem value="Account" outcome="/views/account/account" />
+								<p:menuitem value="Profile" outcome="/views/account/profile" />
+								<p:menuitem action="#{accountController.logOut}" value="Logout"
+									ajax="false" />
+							</p:submenu>
+							<p:menuitem
+								action="#{accountController.prepare4ChangeCurrentEnvironment}"
+								value="#{accountController.currentEnvironment.environmentName}"
+								styleClass="environment-menu"
+								oncomplete="PF('ChangeCurrentEnvDlg').show();"
+								update="CurrentEnvironmentEditForm" />
+						</p:menubar>
+					</h:form>
+				</div>
+			</div>
+		</div>
+		<ui:insert name="body"></ui:insert>
+	</h:panelGroup>
+	<span id="scrollTop" class="scroll-top scroll-top-hidden"
+		onclick="$('html, body').animate({scrollTop: 0}, 'fast');" />
+	<pe:waypoint id="waypoint4ScrollTop" for="content" offset="'-20%'">
+		<pe:javascript event="reached"
+			execute="$('#scrollTop').toggleClass('scroll-top-hidden', ext.direction === 'up');" />
+	</pe:waypoint>
+	<h:outputScript library="js" name="smc.js" />
+</h:body>
+</html>

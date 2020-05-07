@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<h:form id="UserGroupListForm">
+		<p:panel header="User group administration">
+			<p:dataTable id="datalist" value="#{userGroupController.items}"
+				var="item" selectionMode="single"
+				selection="#{userGroupController.selected}"
+				rowKey="#{item.userGroupId}" paginator="true"
+				paginatorPosition="bottom" rows="15" rowsPerPageTemplate="15,25"
+				tableStyle="table-layout:fixed">
+				<p:ajax event="rowSelect"
+					update="createButton,editButton,deleteButton" />
+				<p:ajax event="rowUnselect"
+					update="createButton,editButton,deleteButton" />
+				<p:column sortBy="#{item.userGroupName}"
+					filterBy="#{item.userGroupName}" filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="User group name" />
+					</f:facet>
+					<h:outputText value="#{item.userGroupName}" />
+				</p:column>
+				<f:facet name="footer">
+					<hr />
+					<h:panelGroup layout="block" style="float: right">
+						<p:commandButton id="refreshButton" icon="ui-icon-refresh"
+							value="Refresh" update="@form,:messages"
+							actionListener="#{userGroupController.resetItems()}" />
+						<p:commandButton id="createButton" icon="ui-icon-plus" value="Add"
+							actionListener="#{userGroupController.prepare4Add()}"
+							update=":UserGroupCreateForm"
+							oncomplete="PF('UserGroupCreateDialog').show();" />
+						<p:commandButton id="editButton" icon="ui-icon-pencil"
+							value="Edit"
+							actionListener="#{userGroupController.prepare4Modify()}"
+							update=":UserGroupEditForm"
+							oncomplete="PF('UserGroupEditDialog').show();"
+							disabled="#{empty userGroupController.selected}" />
+						<p:commandButton id="deleteButton" icon="ui-icon-trash"
+							value="Delete" actionListener="#{userGroupController.delete()}"
+							update="@form,:messages"
+							disabled="#{empty userGroupController.selected}" />
+					</h:panelGroup>
+				</f:facet>
+			</p:dataTable>
+		</p:panel>
+	</h:form>
+</ui:composition>

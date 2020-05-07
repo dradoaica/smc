@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<ui:composition>
+	<p:dialog id="EnvironmentCreateDlg" position="center center"
+		draggable="false" closable="false" widgetVar="EnvironmentCreateDialog"
+		modal="true" resizable="false" appendToBody="true"
+		header="Create new environment">
+		<h:form id="EnvironmentCreateForm">
+			<h:panelGroup id="display">
+				<p:panelGrid columns="2"
+					rendered="#{environmentController.selected != null}">
+					<p:outputLabel value="Code" for="code" />
+					<p:inputText id="code"
+						value="#{environmentController.selected.environmentCode}" />
+					<p:outputLabel value="Name" for="name" />
+					<p:inputText id="name"
+						value="#{environmentController.selected.environmentName}" />
+					<p:outputLabel value="Upstream" for="upstreamEnvironmentId" />
+					<p:selectOneMenu id="upstreamEnvironmentId"
+						value="#{environmentController.selected.upstreamEnvironment}"
+						filter="true" filterMatchMode="contains">
+						<f:selectItem itemLabel="(none)" itemValue="#{null}" />
+						<f:selectItems value="#{environmentController.items}"
+							var="upstreamEnvironmentIdItem"
+							itemValue="#{upstreamEnvironmentIdItem}"
+							itemLabel="#{upstreamEnvironmentIdItem.environmentCode}" />
+						<f:converter binding="#{environmentConverter}" />
+					</p:selectOneMenu>
+				</p:panelGrid>
+				<h:panelGroup style="float: right; padding-top: 5px;">
+					<p:commandButton actionListener="#{environmentController.add()}"
+						value="Add" update="@form,:EnvironmentListForm,:messages"
+						oncomplete="handleSubmit(xhr,status,args,PF('EnvironmentCreateDialog'));" />
+					<p:commandButton value="Cancel"
+						onclick="PF('EnvironmentCreateDialog').hide()" immediate="true" />
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:form>
+	</p:dialog>
+</ui:composition>
+</html>

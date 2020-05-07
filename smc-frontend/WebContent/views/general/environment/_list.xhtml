@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<h:form id="EnvironmentListForm">
+		<p:panel header="Environment administration">
+			<p:dataTable id="datalist" value="#{environmentController.items}"
+				var="item" selectionMode="single"
+				selection="#{environmentController.selected}"
+				rowKey="#{item.environmentId}" paginator="true"
+				paginatorPosition="bottom" rows="15" rowsPerPageTemplate="15,25"
+				tableStyle="table-layout:fixed">
+				<p:ajax event="rowSelect"
+					update="createButton,editButton,deleteButton" />
+				<p:ajax event="rowUnselect"
+					update="createButton,editButton,deleteButton" />
+				<p:column sortBy="#{item.environmentCode}"
+					filterBy="#{item.environmentCode}" filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="Code" />
+					</f:facet>
+					<h:outputText value="#{item.environmentCode}" />
+				</p:column>
+				<p:column sortBy="#{item.environmentName}"
+					filterBy="#{item.environmentName}" filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="Name" />
+					</f:facet>
+					<h:outputText value="#{item.environmentName}" />
+				</p:column>
+				<p:column sortBy="#{item.upstreamEnvironment.environmentCode}"
+					filterBy="#{item.upstreamEnvironment.environmentCode}"
+					filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="Upstream" />
+					</f:facet>
+					<h:outputText value="#{item.upstreamEnvironment.environmentCode}" />
+				</p:column>
+				<f:facet name="footer">
+					<hr />
+					<h:panelGroup layout="block" style="float: right">
+						<p:commandButton id="refreshButton" icon="ui-icon-refresh"
+							value="Refresh" update="@form,:messages"
+							actionListener="#{environmentController.resetItems()}" />
+						<p:commandButton id="createButton" icon="ui-icon-plus" value="Add"
+							actionListener="#{environmentController.prepare4Add()}"
+							update=":EnvironmentCreateForm"
+							oncomplete="PF('EnvironmentCreateDialog').show();" />
+						<p:commandButton id="editButton" icon="ui-icon-pencil"
+							value="Edit"
+							actionListener="#{environmentController.prepare4Modify()}"
+							update=":EnvironmentEditForm"
+							oncomplete="PF('EnvironmentEditDialog').show();"
+							disabled="#{empty environmentController.selected}" />
+						<p:commandButton id="deleteButton" icon="ui-icon-trash"
+							value="Delete" actionListener="#{environmentController.delete()}"
+							update="@form,:messages"
+							disabled="#{empty environmentController.selected}" />
+					</h:panelGroup>
+				</f:facet>
+			</p:dataTable>
+		</p:panel>
+	</h:form>
+</ui:composition>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<h:form id="AvailablePackageListForm">
+		<p:panel header="Available package administration">
+			<p:dataTable id="datalist"
+				value="#{availablePackageController.items}" var="item"
+				selectionMode="single"
+				selection="#{availablePackageController.selected}"
+				rowKey="#{item.availablePackageId}" paginator="true"
+				paginatorPosition="bottom" rows="15" rowsPerPageTemplate="15,25"
+				tableStyle="table-layout:fixed">
+				<p:ajax event="rowSelect"
+					update="createButton,editButton,deleteButton,deployButton" />
+				<p:ajax event="rowUnselect"
+					update="createButton,editButton,deleteButton,deployButton" />
+				<p:column sortBy="#{item.availablePackageCode}"
+					filterBy="#{item.availablePackageCode}" filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="Code" />
+					</f:facet>
+					<h:outputText value="#{item.availablePackageCode}" />
+				</p:column>
+				<p:column sortBy="#{item.availablePackageName}"
+					filterBy="#{item.availablePackageName}" filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="Name" />
+					</f:facet>
+					<h:outputText value="#{item.availablePackageName}" />
+				</p:column>
+				<p:column sortBy="#{item.packageState.dictionaryItemName}"
+					filterBy="#{item.packageState.dictionaryItemName}"
+					filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="State" />
+					</f:facet>
+					<h:outputText value="#{item.packageState.dictionaryItemName}" />
+				</p:column>
+				<p:column sortBy="#{item.targetMask}" filterBy="#{item.targetMask}"
+					filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="Target mask" />
+					</f:facet>
+					<h:outputText value="#{item.targetMask}" />
+				</p:column>
+				<f:facet name="footer">
+					<hr />
+					<h:panelGroup layout="block" style="float: right">
+						<p:commandButton id="refreshButton" icon="ui-icon-refresh"
+							value="Refresh" update="@form,:messages"
+							actionListener="#{availablePackageController.resetItems()}" />
+						<p:commandButton id="createButton" icon="ui-icon-plus" value="Add"
+							actionListener="#{availablePackageController.prepare4Add()}"
+							update=":AvailablePackageCreateForm"
+							oncomplete="PF('AvailablePackageCreateDialog').show();" />
+						<p:commandButton id="editButton" icon="ui-icon-pencil"
+							value="Edit"
+							actionListener="#{availablePackageController.prepare4Modify()}"
+							update=":AvailablePackageEditForm"
+							oncomplete="PF('AvailablePackageEditDialog').show();"
+							disabled="#{empty availablePackageController.selected}" />
+						<p:commandButton id="deployButton" icon="fa fa-space-shuttle"
+							value="Deploy"
+							actionListener="#{availablePackageController.deploy()}"
+							update="@form,:messages"
+							disabled="#{empty availablePackageController.selected}" />
+						<p:commandButton id="deleteButton" icon="ui-icon-trash"
+							value="Delete"
+							actionListener="#{availablePackageController.delete()}"
+							update="@form,:messages"
+							disabled="#{empty availablePackageController.selected}" />
+					</h:panelGroup>
+				</f:facet>
+			</p:dataTable>
+		</p:panel>
+	</h:form>
+</ui:composition>

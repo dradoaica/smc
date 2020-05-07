@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<h:form id="UserListForm">
+		<p:panel header="User administration">
+			<p:dataTable id="datalist" value="#{smcUserController.items}"
+				var="item" selectionMode="single"
+				selection="#{smcUserController.selected}" rowKey="#{item.userId}"
+				paginator="true" paginatorPosition="bottom" rows="15"
+				rowsPerPageTemplate="15,25" tableStyle="table-layout:fixed">
+				<p:ajax event="rowSelect"
+					update="createButton,editButton,deleteButton" />
+				<p:ajax event="rowUnselect"
+					update="createButton,editButton,deleteButton" />
+				<p:column sortBy="#{item.userName}" filterBy="#{item.userName}"
+					filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="User name" />
+					</f:facet>
+					<h:outputText value="#{item.userName}" />
+				</p:column>
+				<p:column sortBy="#{item.person.fullName}"
+					filterBy="#{item.person.fullName}" filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="Person" />
+					</f:facet>
+					<h:outputText value="#{item.person.fullName}" />
+				</p:column>
+				<p:column sortBy="#{item.userGroup.userGroupName}"
+					filterBy="#{item.userGroup.userGroupName}"
+					filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="Group" />
+					</f:facet>
+					<h:outputText value="#{item.userGroup.userGroupName}" />
+				</p:column>
+				<p:column sortBy="#{item.inactive}" style="width:10%;">
+					<f:facet name="header">
+						<h:outputText value="Inactive" />
+					</f:facet>
+					<p:selectBooleanCheckbox disabled="true" value="#{item.inactive}" />
+				</p:column>
+				<f:facet name="footer">
+					<hr />
+					<h:panelGroup layout="block" style="float: right">
+						<p:commandButton id="refreshButton" icon="ui-icon-refresh"
+							value="Refresh" update="@form,:messages"
+							actionListener="#{smcUserController.resetItems()}" />
+						<p:commandButton id="createButton" icon="ui-icon-plus" value="Add"
+							actionListener="#{smcUserController.prepare4Add()}"
+							update=":UserCreateForm"
+							oncomplete="PF('UserCreateDialog').show();" />
+						<p:commandButton id="editButton" icon="ui-icon-pencil"
+							value="Edit"
+							actionListener="#{smcUserController.prepare4Modify()}"
+							update=":UserEditForm" oncomplete="PF('UserEditDialog').show();"
+							disabled="#{empty smcUserController.selected}" />
+						<p:commandButton id="deleteButton" icon="ui-icon-trash"
+							value="Delete" actionListener="#{smcUserController.delete()}"
+							update="@form,:messages"
+							disabled="#{empty smcUserController.selected}" />
+					</h:panelGroup>
+				</f:facet>
+			</p:dataTable>
+		</p:panel>
+	</h:form>
+</ui:composition>

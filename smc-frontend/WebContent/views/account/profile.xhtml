@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="/template.xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="body">
+		<h:form id="ProfileForm">
+			<p:panel header="Profile administration">
+				<h:panelGrid border="0" columns="2">
+					<p:outputLabel value="First name:  " for="firstName" />
+					<p:inputText id="firstName"
+						value="#{accountController.mySelf.person.firstName}" />
+					<p:outputLabel value="Last name:  " for="lastName" />
+					<p:inputText id="lastName"
+						value="#{accountController.mySelf.person.lastName}" />
+					<p:outputLabel value="E-Mail:  " for="e_Mail" />
+					<p:inputText id="e_Mail"
+						value="#{accountController.mySelf.person.e_Mail}" />
+					<p:outputLabel value="Mobile phone:  " for="mobilePhone" />
+					<p:inputText id="mobilePhone"
+						value="#{accountController.mySelf.person.mobilePhone}" />
+					<p:outputLabel value="Gender:  " for="genderId" />
+					<p:selectOneMenu id="genderId"
+						value="#{accountController.mySelf.person.gender}" filter="true"
+						filterMatchMode="contains">
+						<f:selectItem itemLabel="(none)" itemValue="#{null}" />
+						<f:selectItems value="#{dictionaryItemController.genders}"
+							var="genderIdItem" itemValue="#{genderIdItem}"
+							itemLabel="#{genderIdItem.dictionaryItemName}" />
+						<f:converter binding="#{dictionaryItemConverter}" />
+					</p:selectOneMenu>
+					<p:outputLabel value="Registered city:  " for="registeredCityId" />
+					<p:autoComplete id="registeredCityId" forceSelection="true"
+						value="#{accountController.mySelf.person.registeredCity}"
+						completeMethod="#{cityController.completeCities}"
+						var="registeredCityIdItem"
+						itemLabel="#{registeredCityIdItem.cityName}"
+						itemValue="#{registeredCityIdItem}" converter="#{cityConverter}"
+						minQueryLength="3" />
+					<p:outputLabel value="Registered district:  "
+						for="registeredDistrictId" />
+					<p:autoComplete id="registeredDistrictId" forceSelection="true"
+						value="#{accountController.mySelf.person.registeredDistrict}"
+						completeMethod="#{cityController.completeDistricts}"
+						var="registeredDistrictIdItem"
+						itemLabel="#{registeredDistrictIdItem.cityName}"
+						itemValue="#{registeredDistrictIdItem}"
+						converter="#{cityConverter}" minQueryLength="3" />
+					<p:outputLabel value="Citizenship:  " for="citizenshipId" />
+					<p:autoComplete id="citizenshipId" forceSelection="true"
+						value="#{accountController.mySelf.person.citizenship}"
+						completeMethod="#{cityController.completeCountries}"
+						var="citizenshipIdItem" itemLabel="#{citizenshipIdItem.cityName}"
+						itemValue="#{citizenshipIdItem}" converter="#{cityConverter}"
+						minQueryLength="3" />
+				</h:panelGrid>
+				<f:facet name="footer">
+					<h:panelGroup layout="block" style="float: right">
+						<p:commandButton icon="ui-icon-disk"
+							actionListener="#{accountController.saveProfile()}" value="Save"
+							update="@form,:messages" />
+						<p:commandButton value="Exit" icon="ui-icon-close" action="/index"
+							ajax="false" />
+					</h:panelGroup>
+				</f:facet>
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

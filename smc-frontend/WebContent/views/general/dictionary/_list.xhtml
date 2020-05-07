@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<h:form id="DictionaryListForm">
+		<p:panel header="Dictionary administration">
+			<p:dataTable id="dictionaries" value="#{dictionaryController.items}"
+				var="item" selectionMode="single"
+				selection="#{dictionaryController.selected}"
+				rowKey="#{item.dictionaryId}" paginator="true"
+				paginatorPosition="bottom" rows="5" tableStyle="table-layout:fixed">
+				<p:ajax event="rowSelect"
+					listener="#{dictionaryItemController.setSelectedDictionary(dictionaryController.selected)}"
+					update=":DictionaryListForm:dictionaryItems" />
+				<p:column sortBy="#{item.dictionaryCode}"
+					filterBy="#{item.dictionaryCode}" filterMatchMode="contains"
+					style="width:35%;">
+					<f:facet name="header">
+						<h:outputText value="Dictionary code" />
+					</f:facet>
+					<h:outputText value="#{item.dictionaryCode}" />
+				</p:column>
+				<p:column sortBy="#{item.dictionaryName}"
+					filterBy="#{item.dictionaryName}" filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="Dictionary name" />
+					</f:facet>
+					<h:outputText value="#{item.dictionaryName}" />
+				</p:column>
+				<f:facet name="footer">
+					<hr />
+					<h:panelGroup layout="block" style="float: right">
+						<p:commandButton id="refreshButton" icon="ui-icon-refresh"
+							value="Refresh"
+							update=":messages,:DictionaryListForm:dictionaries"
+							actionListener="#{dictionaryController.resetItems()}" />
+					</h:panelGroup>
+				</f:facet>
+			</p:dataTable>
+			<p:spacer width="100%" height="10" />
+			<p:dataTable id="dictionaryItems"
+				value="#{dictionaryItemController.items}" var="item"
+				selectionMode="single"
+				selection="#{dictionaryItemController.selected}"
+				rowKey="#{item.dictionaryItemId}" paginator="true"
+				paginatorPosition="bottom" rows="10" tableStyle="table-layout:fixed">
+				<p:ajax event="rowSelect"
+					update="createButton editButton deleteButton" />
+				<p:ajax event="rowUnselect"
+					update="createButton editButton deleteButton" />
+				<p:column sortBy="#{item.dictionaryItemCode}"
+					filterBy="#{item.dictionaryItemCode}" filterMatchMode="contains"
+					style="width:35%;">
+					<f:facet name="header">
+						<h:outputText value="Dictionary item code" />
+					</f:facet>
+					<h:outputText value="#{item.dictionaryItemCode}" />
+				</p:column>
+				<p:column sortBy="#{item.dictionaryItemName}"
+					filterBy="#{item.dictionaryItemName}" filterMatchMode="contains">
+					<f:facet name="header">
+						<h:outputText value="Dictionary item name" />
+					</f:facet>
+					<h:outputText value="#{item.dictionaryItemName}" />
+				</p:column>
+				<f:facet name="footer">
+					<hr />
+					<h:panelGroup layout="block" style="float: right">
+						<p:commandButton id="refreshButton" icon="ui-icon-refresh"
+							value="Refresh" update="@form,:messages"
+							actionListener="#{dictionaryItemController.resetItems()}" />
+						<p:commandButton id="createButton" icon="ui-icon-plus" value="Add"
+							actionListener="#{dictionaryItemController.prepare4Add()}"
+							update=":DictionaryItemCreateForm"
+							oncomplete="PF('DictionaryItemCreateDialog').show();" />
+						<p:commandButton id="editButton" icon="ui-icon-pencil"
+							value="Edit" actionListener="#{dictionaryItemController.prepare4Modify()}"
+							update=":DictionaryItemEditForm"
+							oncomplete="PF('DictionaryItemEditDialog').show();"
+							disabled="#{empty dictionaryItemController.selected}" />
+						<p:commandButton id="deleteButton" icon="ui-icon-trash"
+							value="Delete"
+							actionListener="#{dictionaryItemController.delete()}"
+							update="@form,:messages"
+							disabled="#{empty dictionaryItemController.selected}" />
+					</h:panelGroup>
+				</f:facet>
+			</p:dataTable>
+		</p:panel>
+	</h:form>
+</ui:composition>

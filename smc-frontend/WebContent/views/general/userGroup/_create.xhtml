@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<ui:composition>
+	<p:dialog id="UserGroupCreateDlg" position="center center"
+		draggable="false" closable="false" widgetVar="UserGroupCreateDialog"
+		modal="true" resizable="false" appendToBody="true"
+		header="Create new user group">
+		<h:form id="UserGroupCreateForm">
+			<h:panelGroup id="display">
+				<p:panelGrid columns="2"
+					rendered="#{userGroupController.selected != null}">
+					<p:outputLabel value="User group name" for="userGroupName" />
+					<p:inputText id="userGroupName"
+						value="#{userGroupController.selected.userGroupName}" />
+					<f:facet name="footer">
+						<p:pickList id="permissions"
+							value="#{userGroupController.permissions}" var="permission"
+							itemValue="#{permission}"
+							itemLabel="#{permission.permissionName}">
+
+							<f:facet name="sourceCaption">Available</f:facet>
+							<f:facet name="targetCaption">Current</f:facet>
+
+							<f:converter binding="#{permissionConverter}" />
+						</p:pickList>
+					</f:facet>
+				</p:panelGrid>
+				<h:panelGroup style="float: right; padding-top: 5px;">
+					<p:commandButton actionListener="#{userGroupController.add()}"
+						value="Add" update="@form,:UserGroupListForm,:messages"
+						oncomplete="handleSubmit(xhr,status,args,PF('UserGroupCreateDialog'));" />
+					<p:commandButton value="Cancel"
+						onclick="PF('UserGroupCreateDialog').hide()" immediate="true" />
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:form>
+	</p:dialog>
+</ui:composition>
+</html>
